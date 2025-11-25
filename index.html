@@ -4,200 +4,228 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>StomatLead UA</title>
-  <style>
-    @keyframes fadeIn { from { opacity: 0; transform: translateY(20px);} to {opacity:1; transform: translateY(0);} }
 
+  <style>
     body {
       margin:0;
       padding:0;
-      font-family:'Inter',Arial,sans-serif;
-      color:#1a1a1a;
-      line-height:1.6;
+      font-family:'Inter', Arial, sans-serif;
       background:linear-gradient(135deg,#e6f3ff 0%,#f8fbff 50%,#e9f5ff 100%);
-      position:relative;
+      line-height:1.6;
+      color:#1a1a1a;
       overflow-x:hidden;
-      transition:background 0.4s ease,color 0.4s ease;
     }
 
-    /* Dark mode */
-    body.dark { background:#0f1217; color:#eaeaea; }
-    body.dark .card { background:#1a1f26; color:#ddd; }
-    body.dark .step-number { background:#0092ff; }
-    body.dark h1, body.dark h2, body.dark p { color:#eaeaea; }
-
-    /* Background waves */
+    /* Soft waves background */
     body::before, body::after {
       content:"";
       position:absolute;
-      width:450px; height:450px;
+      width:420px; height:420px;
       filter:blur(90px);
       border-radius:50%;
-      transition:opacity 0.4s ease;
+      z-index:-1;
     }
     body::before {
-      top:-120px; left:-120px;
-      background:rgba(0,132,255,0.12);
+      background:rgba(0,140,255,0.12);
+      top:-140px; left:-120px;
     }
     body::after {
-      bottom:-140px; right:-140px;
-      background:rgba(0,170,255,0.14);
+      background:rgba(0,160,255,0.14);
+      bottom:-160px; right:-120px;
     }
-    body.dark::before { background:rgba(0,132,255,0.15); }
-    body.dark::after { background:rgba(0,170,255,0.18); }
-
-    .overlay { padding-bottom:40px; position:relative; z-index:2; }
 
     .section {
       max-width:900px;
       margin:0 auto;
       padding:40px 20px;
       text-align:center;
-      animation:fadeIn 0.7s ease;
     }
 
-    .logo { width:110px; margin-bottom:10px; }
+    h1 { font-size:42px; margin-bottom:10px; }
+    h2 { font-size:28px; margin:25px 0 10px; }
+    p { font-size:18px; max-width:700px; margin:0 auto; }
 
-    h1 { font-size:44px; font-weight:700; margin-bottom:10px; }
-    h2 { font-size:28px; font-weight:600; margin:25px 0 10px; }
-    p  { font-size:18px; max-width:700px; margin:0 auto; }
-
-    .button, .button-ig {
+    .button {
       display:inline-block;
       margin-top:20px;
       padding:14px 30px;
       font-size:18px;
-      border-radius:14px;
+      background:#007bff;
       color:white;
+      border-radius:14px;
       text-decoration:none;
-      transition:0.25s;
     }
-    .button { background:#007bff; }
-    .button:hover { background:#005fcc; }
-    .button-ig { background:#e4405f; }
-    .button-ig:hover { background:#c72e4b; }
-    body.dark .button { background:#0092ff; }
+
+    .button-ig {
+      display:inline-block;
+      margin-top:12px;
+      padding:12px 26px;
+      background:#e4405f;
+      color:white;
+      border-radius:12px;
+      text-decoration:none;
+    }
 
     /* Cards */
     .card-grid {
       display:grid;
       grid-template-columns:repeat(auto-fit, minmax(260px,1fr));
       gap:20px;
-      justify-items:center;
       margin-top:25px;
     }
-
     .card {
       background:white;
-      padding:24px;
-      border-radius:18px;
-      box-shadow:0 6px 18px rgba(0,0,0,0.08);
+      padding:22px;
+      border-radius:16px;
+      box-shadow:0 6px 16px rgba(0,0,0,0.07);
       font-size:17px;
-      width:100%;
-      max-width:260px;
       transition:transform 0.25s ease, box-shadow 0.25s ease;
     }
-
     .card:hover {
       transform:scale(1.05);
       box-shadow:0 12px 26px rgba(0,0,0,0.12);
     }
 
-    /* Steps */
-    .steps-title { margin-top:35px; margin-bottom:15px; }
-    .steps-container { max-width:650px; margin:0 auto; text-align:left; }
-    .step { display:flex; align-items:center; margin-bottom:14px; }
-    .step-number {
-      width:38px; height:38px;
-      background:#007bff;
-      color:white;
-      font-size:18px;
-      font-weight:bold;
-      border-radius:50%;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      margin-right:12px;
-      flex-shrink:0;
-    }
-
-    /* Dark switch */
-    .dark-toggle {
-      position:fixed;
-      top:15px; right:15px;
-      background:#111;
-      color:white;
-      padding:10px 16px;
-      border-radius:10px;
+    /* Accordion */
+    details {
+      margin:15px auto;
+      max-width:650px;
+      text-align:left;
+      background:white;
+      padding:15px 18px;
+      border-radius:16px;
+      box-shadow:0 6px 16px rgba(0,0,0,0.07);
       cursor:pointer;
-      z-index:999;
-      font-size:14px;
-      user-select:none;
     }
+    summary {
+      font-size:20px;
+      font-weight:600;
+      outline:none;
+    }
+    details p, details li {
+      font-size:17px;
+    }
+    ul { padding-left:25px; }
 
-    @media (max-width:600px) {
-      h1 { font-size:32px; }
-      h2 { font-size:24px; }
-      p { font-size:16px; }
-      .button { font-size:16px; padding:12px 22px; }
-      .card { max-width:100%; }
+    /* Cases */
+    .case-box {
+      background:white;
+      padding:22px;
+      border-radius:16px;
+      box-shadow:0 6px 16px rgba(0,0,0,0.07);
+      margin:20px auto;
+      max-width:650px;
+      text-align:left;
+      transition:transform 0.25s ease, box-shadow 0.25s ease;
     }
+    .case-box:hover {
+      transform:scale(1.03);
+      box-shadow:0 12px 26px rgba(0,0,0,0.12);
+    }
+    .case-logo {
+      width:60px;
+      margin-bottom:10px;
+    }
+    .case-title { font-size:22px; font-weight:600; margin-bottom:6px; }
+    .case-text { font-size:17px; }
   </style>
 </head>
 <body>
-<div class="dark-toggle" onclick="document.body.classList.toggle('dark')">Dark / Light</div>
-<div class="overlay">
 
   <div class="section">
-    <img src="https://cdn-icons-png.flaticon.com/512/2966/2966327.png" class="logo" alt="logo" />
+    <img src="https://cdn-icons-png.flaticon.com/512/6009/6009864.png" class="logo" width="90" alt="logo" />
     <h1>StomatLead UA</h1>
-    <p>Сервіс генерації стоматологічних лідів для клінік України. Мінімалізм, ефективність та якість.</p>
-
+    <p>Сервіс генерації стоматологічних лідів для клінік України.</p>
     <a href="https://t.me/StomatLeadbot" class="button">Замовити безкоштовні ліди</a><br>
     <a href="https://www.instagram.com/stomatlead.ua/" class="button-ig">Instagram</a>
   </div>
 
-  <!-- ЩО МИ ПРОПОНУЄМО -->
   <div class="section">
     <h2>Що ми пропонуємо</h2>
     <div class="card-grid">
-      <div class="card">Лідогенерація: імплантація, брекети, вініри, лікування, дитяча стоматологія.</div>
-      <div class="card">Тестові ліди безкоштовно — без ризиків.</div>
-      <div class="card">Аудит CRM: знаходимо точки втрат, оптимізуємо систему.</div>
-      <div class="card">Скрипти та навчання адміністраторів.</div>
+      <div class="card">Лідогенерація: імплантація, брекети, лікування, вініри.</div>
+      <div class="card">Тестові ліди без ризиків.</div>
+      <div class="card">Аудит CRM та оптимізація воронки.</div>
+      <div class="card">Скрипти + навчання адміністраторів.</div>
       <div class="card">Оновлені бази стоматологій України.</div>
     </div>
   </div>
 
-  <!-- Як працює система -->
   <div class="section">
-    <h2 class="steps-title">Як працює лідогенерація</h2>
-    <div class="steps-container">
-      <div class="step"><div class="step-number">1</div>Визначаємо послугу.</div>
-      <div class="step"><div class="step-number">2</div>Формуємо цільову базу.</div>
-      <div class="step"><div class="step-number">3</div>Збираємо ліди.</div>
-      <div class="step"><div class="step-number">4</div>Передаємо клініці.</div>
-      <div class="step"><div class="step-number">5</div>Оптимізуємо результат.</div>
-    </div>
-
-    <h2 class="steps-title">Як працює аудит CRM</h2>
-    <div class="steps-container">
-      <div class="step"><div class="step-number">1</div>Перевірка воронки.</div>
-      <div class="step"><div class="step-number">2</div>Оцінка швидкості відповіді.</div>
-      <div class="step"><div class="step-number">3</div>Пошук точок втрат.</div>
-      <div class="step"><div class="step-number">4</div>Рекомендації.</div>
-      <div class="step"><div class="step-number">5</div>Впровадження змін.</div>
-    </div>
-
-    <h2 class="steps-title">Скрипти + бази стоматологій</h2>
-    <div class="steps-container">
-      <div class="step"><div class="step-number">1</div>Створення скриптів.</div>
-      <div class="step"><div class="step-number">2</div>Навчання адміністратора.</div>
-      <div class="step"><div class="step-number">3</div>Передача баз стоматологій.</div>
-      <div class="step"><div class="step-number">4</div>Підвищення конверсії.</div>
-      <div class="step"><div class="step-number">5</div>Супровід.</div>
+    <h2>Кому підходить?</h2>
+    <div class="card-grid">
+      <div class="card">Клінікам, що хочуть збільшити нові записи.</div>
+      <div class="card">Стоматологіям із низькою конверсією у продаж.</div>
+      <div class="card">Новим клінікам, які потребують швидкого старту.</div>
     </div>
   </div>
 
-</div>
+  <div class="section">
+    <h2>Чому ми?</h2>
+    <div class="card-grid">
+      <div class="card">Прозорі умови — без прихованих платежів.</div>
+      <div class="card">Точні, цільові ліди під вашу послугу.</div>
+      <div class="card">Експертиза в CRM та продажах.</div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>Як працює</h2>
+
+    <details>
+      <summary>Як працює лідогенерація</summary>
+      <ul>
+        <li>Визначаємо напрям.</li>
+        <li>Формуємо базу ЦА.</li>
+        <li>Збираємо ліди.</li>
+        <li>Передаємо клініці.</li>
+        <li>Допомагаємо покращити результат.</li>
+      </ul>
+    </details>
+
+    <details>
+      <summary>Як працює аудит CRM</summary>
+      <ul>
+        <li>Перевірка воронки.</li>
+        <li>Оцінка швидкості відповіді.</li>
+        <li>Пошук точок втрат.</li>
+        <li>Рекомендації.</li>
+        <li>Впровадження.</li>
+      </ul>
+    </details>
+
+    <details>
+      <summary>Скрипти + бази стоматологій</summary>
+      <ul>
+        <li>Створення персональних скриптів.</li>
+        <li>Навчання адміністратора.</li>
+        <li>Передача баз.</li>
+        <li>Оптимізація конверсії.</li>
+        <li>Супровід.</li>
+      </ul>
+    </details>
+  </div>
+
+  <div class="section">
+    <h2>Кейси</h2>
+
+    <div class="case-box">
+      <img src="https://cdn-icons-png.flaticon.com/512/6009/6009890.png" class="case-logo" />
+      <div class="case-title">WhiteLine Dental (Київ)</div>
+      <div class="case-text">
+        Отримали 5 тестових лідів: 3 записались, 1 встановив імплант. Клініка залишилася задоволена якістю та швидкістю обробки.
+      </div>
+    </div>
+
+    <div class="case-box">
+      <img src="https://cdn-icons-png.flaticon.com/512/6009/6009884.png" class="case-logo" />
+      <div class="case-title">Smile&Care Studio (Одеса)</div>
+      <div class="case-text">
+        Провели аудит CRM: конверсія зросла з 12% до 27%. Оновили скрипти та підготували адміністратора.
+      </div>
+    </div>
+
+  </div>
+
 </body>
 </html>
